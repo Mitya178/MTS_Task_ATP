@@ -63,7 +63,7 @@ pipeline {
             steps {
                 script {
                     sh '''
-                        docker run -d -p 5051:5051 --hostname backend1--name MTS_backend1 mitya178/mtstaskatp_backend1:v1.0.0
+                        docker run -d -p 5051:5051 --hostname backend1 --name mts_backend1 mitya178/mtstaskatp_backend1:v1.0.0
                     '''
                 }
             }
@@ -72,7 +72,7 @@ pipeline {
             steps {
                 script {
                     sh '''
-                        docker run -d -p 5052:5052 --hostname backend2 --name MTS_backend2 mitya178/mtstaskatp_backend2:v1.0.0
+                        docker run -d -p 5052:5052 --hostname backend2 --name mts_backend2 mitya178/mtstaskatp_backend2:v1.0.0
                     '''
                 }
             }
@@ -81,7 +81,7 @@ pipeline {
             steps {
                 script {
                     sh '''
-                        docker run -d -p 5050:5050  --hostname frontend--name MTS_frontend mitya178/mtstaskatp_frontend:v1.0.0
+                        docker run -d -p 5050:5050  --hostname frontend --name mts_frontend mitya178/mtstaskatp_frontend:v1.0.0
                     '''
                 }
             }
