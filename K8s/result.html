@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Calculator</title>
+</head>
+<body>
+    <form method="post" action="/">
+        <input type="number" name="num1" required>
+        <input type="number" name="num2" required>
+        <input type="submit" value="Посчитать">
+    </form>
+</body>
+</html>
+root@jk8s:/opt/MTS_Task/frontend# cat result.html
+<html>
+<head>
+    <title>Calculator Result</title>
+</head>
+<body>
+    <h3>Сумма чисел: {{ sum_result['result'] }}</h3>
+    <p>Вычислено на сервере: {{ sum_result['server'] }}</p>
+
+    <h3>Произведение чисел: {{ multiply_result['result'] }}</h3>
+    <p>Вычислено на сервере: {{ multiply_result['server'] }}</p>
+</body>
+</html>
