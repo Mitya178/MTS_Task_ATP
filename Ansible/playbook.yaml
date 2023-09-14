@@ -1,0 +1,29 @@
+- name: Run Docker images
+  hosts: demo
+  tasks:
+    - name: Start backend1 container
+      docker_container:
+        name: backend1
+        image: "mitya178/mtstaskatp_backend1:v2.0.0"
+        state: started
+        ports:
+          - "5051:5051"
+      become: true
+
+    - name: Start backend2 container
+      docker_container:
+        name: backend2
+        image: "mitya178/mtstaskatp_backend2:v2.0.0"
+        state: started
+        ports:
+          - "5052:5052"
+      become: true
+
+    - name: Start frontend container
+      docker_container:
+        name: frontend
+        image: "mitya178/mitya178/mtstaskatp_frontend:v2.0.0"
+        state: started
+        ports:
+          - "5050:5050"
+      become: true
