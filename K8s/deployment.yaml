@@ -61,11 +61,7 @@ spec:
         image: mitya178/mtstask_frontend:v18
         ports:
         - containerPort: 5050
-        env:
-          - name: BACKEND1
-            value: backend1-service
-          - name: BACKEND2
-            value: backend2-service
+
 
 ---
 
