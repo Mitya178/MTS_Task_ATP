@@ -1,0 +1,89 @@
+pipeline {
+    agent any
+    
+    stages {
+        stage('Build image for backend1') {
+            steps {
+                script {
+                    sh '''
+                        cd Backend1
+                        docker build -t mitya178/mtstaskATP_backend1:v1.0.0 .
+                    '''
+                }
+            }
+        }
+        stage('Build image for backend2') {
+            steps {
+                script {
+                    sh '''
+                        cd Backend2
+                        docker build -t mitya178/mtstaskATP_backend2:v1.0.0 .
+                    '''
+                }
+            }
+        }
+        stage('Build image for frontend') {
+            steps {
+                script {
+                    sh '''
+                        cd frontend
+                        docker build -t mitya178/mtstaskATP_frontend:v1.0.0 .
+                    '''
+                }
+            }
+        }
+        stage('Push in Artifactory_backend1') {
+            steps {
+                withDockerRegistry(credentialsId: 'dockerhub-cred-mitya178', url: 'https://index.docker.io/v1/') {
+                    sh '''
+                        docker push mitya178/mtstaskATP_backend1:v1.0.0  
+                    '''
+                }
+            }
+        }
+        stage('Push in Artifactory_backend2') {
+            steps {
+                withDockerRegistry(credentialsId: 'dockerhub-cred-mitya178', url: 'https://index.docker.io/v1/') {
+                    sh '''
+                        docker push mitya178/mtstaskATP_backend2:v1.0.0 
+                    '''
+                }
+            }
+        }
+        stage('Push in Artifactory_frontend') {
+            steps {
+                withDockerRegistry(credentialsId: 'dockerhub-cred-mitya178', url: 'https://index.docker.io/v1/') {
+                    sh '''
+                        docker push mitya178/mtstaskATP_frontend:v1.0.0
+                    '''
+                }
+            }
+        }
+        stage('Check working_Backend1') {
+            steps {
+                script {
+                    sh '''
+                        docker run -d -p 5051:5051 --name MTS_backend1 mitya178/mtstaskATP_backend1:v1.0.0
+                    '''
+                }
+            }
+        }
+        stage('Check working_Backend2') {
+            steps {
+                script {
+                    sh '''
+                        docker run -d -p 5052:5052 --name MTS_backend2 mitya178/mtstaskATP_backend2:v1.0.0
+                    '''
+                }
+            }
+        }
+        stage('Check working_frontend') {
+            steps {
+                script {
+                    sh '''
+                        docker run -d -p 5050:5050 --name MTS_frontend mitya178/mtstaskATP_frontend:v1.0.0
+                    '''
+                }
+            }
+        }
+    }
