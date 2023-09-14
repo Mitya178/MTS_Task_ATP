@@ -1,0 +1,77 @@
+pipeline {
+    agent any
+    
+    stages {
+        stage('Build image for backend1') {
+            steps {
+                script {
+                    sh '''
+                        pwd
+                        cd Backend1
+                        docker build -t mitya178/mtstaskatp_backend1:v3.0.0 .
+                    '''
+                }
+            }
+        }
+        stage('Build image for backend2') {
+            steps {
+                script {
+                    sh '''
+                        cd Backend2
+                        docker build -t mitya178/mtstaskatp_backend2:v3.0.0 .
+                    '''
+                }
+            }
+        }
+        stage('Build image for frontend') {
+            steps {
+                script {
+                    sh '''
+                        pwd
+                        cd K8s
+                        docker build -t mitya178/mtstaskatp_frontend:v3.0.0 .
+                    '''
+                }
+            }
+        }
+        stage('Push in Artifactory_backend1') {
+            steps {
+                withDockerRegistry(credentialsId: 'dockerhub-cred-mitya178', url: 'https://index.docker.io/v1/') {
+                    sh '''
+                        pwd
+                        docker push mitya178/mtstaskatp_backend1:v3.0.0
+                    '''
+                }
+            }
+        }
+        stage('Push in Artifactory_backend2') {
+            steps {
+                withDockerRegistry(credentialsId: 'dockerhub-cred-mitya178', url: 'https://index.docker.io/v1/') {
+                    sh '''
+                        docker push mitya178/mtstaskatp_backend2:v3.0.0
+                    '''
+                }
+            }
+        }
+        stage('Push in Artifactory_frontend') {
+            steps {
+                withDockerRegistry(credentialsId: 'dockerhub-cred-mitya178', url: 'https://index.docker.io/v1/') {
+                    sh '''
+                        pwd
+                        docker push mitya178/mtstaskatp_frontend:v3.0.0
+                    '''
+                }
+            }
+        }
+        stage('Start Kubernetes_pods') {
+            steps {
+                script {
+                    sh '''
+                        cd K8s
+                        sudo kubectl apply -f deployment.yaml
+                    '''
+                }
+            }
+        }
+    }
+}
