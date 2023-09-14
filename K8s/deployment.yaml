@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
       - name: backend1
-        image: mitya178/mtstask_backend1:v10
+        image: mitya178/mtstaskatp_backend1:v3.0.0
         ports:
         - containerPort: 5051
 
@@ -36,7 +36,7 @@ spec:
     spec:
       containers:
       - name: backend2
-        image: mitya178/mtstask_backend2:v10
+        image: mitya178/mtstaskatp_backend2:v3.0.0
         ports:
         - containerPort: 5052
 
@@ -58,7 +58,7 @@ spec:
     spec:
       containers:
       - name: frontend
-        image: mitya178/mtstask_frontend:v18
+        image: mitya178/mtstaskatp_frontend:v3.0.0
         ports:
         - containerPort: 5050
 
